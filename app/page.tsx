@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { type CSSProperties, useMemo, useState } from "react";
 import { ArrowRight, Check, Code2, GitBranch, GraduationCap, GripVertical, Menu, RefreshCw, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -40,6 +40,13 @@ function SectionIntro({ eyebrow, title, copy }: { eyebrow: string; title: string
   return <div className="section-intro"><p className="eyebrow">{eyebrow}</p><h2>{title}</h2>{copy ? <p className="section-copy">{copy}</p> : null}</div>;
 }
 
+function HeroEdgeRails() {
+  return <div className="hero-edge-rails" aria-hidden="true">
+    <div className="hero-rail hero-rail-left"><span>question.py</span><code>h = random(20, 80)</code><code>t = √(2h / g)</code><div className="rail-axis"><i /><i /><i /><i /></div><small>PARAMETER SPACE</small></div>
+    <div className="hero-rail hero-rail-right"><small>LIVE QUESTION EVENTS</small><span><i /> Variant generated</span><span><i /> Response submitted</span><span><i /> Feedback returned</span><b>03 / 08</b></div>
+  </div>;
+}
+
 function AssessmentDemo() {
   const [variantIndex, setVariantIndex] = useState(0);
   const [answer, setAnswer] = useState("");
@@ -74,7 +81,9 @@ function AssessmentDemo() {
 function WorkflowDiagram() {
   const [active, setActive] = useState(0);
   const step = workflowSteps[active];
-  return <div className="workflow-layout">
+  return <div className={`workflow-layout workflow-active-${active}`}>
+    <div className="workflow-edge workflow-edge-left" aria-hidden="true"><span>QUESTION BANK</span><strong>One authored idea</strong><i /></div>
+    <div className="workflow-edge workflow-edge-right" aria-hidden="true"><span>COURSE DELIVERY</span><strong>4 learning contexts</strong><div><i /><i /><i /><i /></div></div>
     <div className="workflow-nav" role="tablist" aria-label="Question workflow">{workflowSteps.map((item, index) => <button key={item.number} type="button" className={active === index ? "active" : ""} onClick={() => setActive(index)} role="tab" aria-selected={active === index}><span>{item.number}</span>{item.label}</button>)}</div>
     <div className="workflow-stage">
       <div className={`workflow-canvas step-${active}`} aria-hidden="true">
@@ -127,7 +136,8 @@ function MultiplePreview() {
 function AssessmentShowcase() {
   const [type, setType] = useState("numerical");
   const preview = useMemo(() => ({ numerical: <NumericalPreview />, code: <CodePreview />, graphical: <GraphicalPreview />, ordered: <OrderedPreview />, multiple: <MultiplePreview /> })[type], [type]);
-  return <Tabs value={type} onValueChange={setType} className="assessment-showcase"><TabsList variant="line" className="assessment-tabs" aria-label="Assessment types">{assessmentTypes.map((item) => <TabsTrigger key={item.value} value={item.value}>{item.label}</TabsTrigger>)}</TabsList><div className="showcase-frame"><div className="showcase-chrome"><span>Question preview</span><span>PrairieLearn</span></div><div className="showcase-content" key={type}>{preview}</div></div></Tabs>;
+  const toolLabels = ({ numerical: ["ƒ(x)", "±", "m/s²"], code: ["{}", "run", "tests"], graphical: ["↗", "axis", "vector"], ordered: ["01", "02", "03"], multiple: ["□", "✓", "□"] } as Record<string, string[]>)[type];
+  return <Tabs value={type} onValueChange={setType} className="assessment-showcase"><aside className="assessment-tool-rail" aria-hidden="true"><small>ACTIVE TOOLSET</small>{toolLabels.map((label) => <span key={label}>{label}</span>)}</aside><TabsList variant="line" className="assessment-tabs" aria-label="Assessment types">{assessmentTypes.map((item) => <TabsTrigger key={item.value} value={item.value}>{item.label}</TabsTrigger>)}</TabsList><div className="showcase-frame"><div className="showcase-chrome"><span>Question preview</span><span>PrairieLearn</span></div><div className="showcase-content" key={type}>{preview}</div></div></Tabs>;
 }
 
 export default function Home() {
@@ -140,7 +150,7 @@ export default function Home() {
       <details className="mobile-menu"><summary aria-label="Open navigation"><Menu /></summary><nav><a href="#product">Product</a><a href="#journey">Use Cases</a><a href="#assessments">Examples</a><a href="#research">Research</a><a href="https://www.prairielearn.com/pricing">Pricing</a><a href="#resources">Resources</a><a href="https://us.prairielearn.com/pl/login">Log in</a></nav></details>
     </header>
 
-    <section className="hero" id="top"><div className="hero-grid" /><div className="hero-copy"><p className="hero-kicker"><span /> Open-source online assessment</p><h1>Assessment that helps students <em>learn by doing.</em></h1><p className="hero-lede">Write questions once, generate randomized variants, grade them automatically, and give students feedback while they are still thinking.</p><div className="hero-actions"><Button asChild className="yellow-button hero-primary"><a href="https://www.prairielearn.com/pricing">Start free</a></Button><Button asChild variant="outline" className="hero-secondary"><a href="https://us.prairielearn.com/pl/login">Explore the demo <ArrowRight /></a></Button></div><div className="hero-notes"><span><Check /> Free for instructors</span><span><Check /> Open source</span></div></div><div className="hero-product"><AssessmentDemo /><p className="interaction-note"><span>Try it:</span> answer, get feedback, then generate a new variant.</p></div></section>
+    <section className="hero" id="top"><div className="hero-grid" /><HeroEdgeRails /><div className="hero-copy"><p className="hero-kicker"><span /> Open-source online assessment</p><h1>Assessment that helps students <em>learn by doing.</em></h1><p className="hero-lede">Write questions once, generate randomized variants, grade them automatically, and give students feedback while they are still thinking.</p><div className="hero-actions"><Button asChild className="yellow-button hero-primary"><a href="https://www.prairielearn.com/pricing">Start free</a></Button><Button asChild variant="outline" className="hero-secondary"><a href="https://us.prairielearn.com/pl/login">Explore the demo <ArrowRight /></a></Button></div><div className="hero-notes"><span><Check /> Free for instructors</span><span><Check /> Open source</span></div></div><div className="hero-product"><AssessmentDemo /><p className="interaction-note"><span>Try it:</span> answer, get feedback, then generate a new variant.</p></div></section>
 
     <section className="trust-strip" aria-label="PrairieLearn adoption">
       <div className="metrics">
@@ -151,16 +161,16 @@ export default function Home() {
           <div><span className="metric-index">03</span><strong>185K+</strong><span>Students</span><i aria-hidden="true" /></div>
         </div>
       </div>
-      <div className="institution-marquee"><span className="institution-label">Used by instructors at</span><div className="institution-window"><div className="institution-track">{[false, true].map((duplicate) => <div className="institution-set" aria-hidden={duplicate} key={String(duplicate)}>{institutions.map((institution) => <img key={`${duplicate}-${institution.name}`} src={institution.logo} alt={duplicate ? "" : institution.name} />)}</div>)}</div></div></div>
+      <div className="institution-marquee"><span className="institution-label">Used by instructors at</span><div className="institution-window"><div className="institution-set">{institutions.map((institution, index) => <img style={{ "--logo-index": index } as CSSProperties} key={institution.name} src={institution.logo} alt={institution.name} />)}</div></div></div>
     </section>
 
     <section className="section workflow-section" id="product"><SectionIntro eyebrow="One question, endlessly useful" title="Author the idea once. Let the question keep teaching." copy="PrairieLearn questions are defined as code, so the same learning objective can produce fresh practice across the course." /><WorkflowDiagram /></section>
 
-    <section className="section journey-section" id="journey"><div className="journey-heading"><SectionIntro eyebrow="Across the course" title="One continuous learning journey." copy="Move from a live classroom check to independent practice, homework, and testing without rebuilding your material." /></div><div className="journey-timeline" role="tablist" aria-label="Course journey">{journeyStages.map((stage, index) => <button key={stage.key} type="button" onClick={() => setJourneyStage(index)} className={journeyStage === index ? "active" : ""} role="tab" aria-selected={journeyStage === index}><span>{index + 1}</span><strong>{stage.label}</strong></button>)}</div><CoursePreview stage={journeyStage} /></section>
+    <section className="section journey-section" id="journey" style={{ "--journey-stage": journeyStage } as CSSProperties}><div className="journey-edge-rail" aria-hidden="true"><small>COURSE JOURNEY</small><div>{journeyStages.map((stage, index) => <span className={journeyStage === index ? "active" : ""} key={stage.key}><i />{stage.label}</span>)}</div></div><div className="journey-bank-note" aria-hidden="true"><small>REUSABLE BANK</small><strong>01 source</strong><span>04 contexts</span><i /></div><div className="journey-heading"><SectionIntro eyebrow="Across the course" title="One continuous learning journey." copy="Move from a live classroom check to independent practice, homework, and testing without rebuilding your material." /></div><div className="journey-timeline" role="tablist" aria-label="Course journey">{journeyStages.map((stage, index) => <button key={stage.key} type="button" onClick={() => setJourneyStage(index)} className={journeyStage === index ? "active" : ""} role="tab" aria-selected={journeyStage === index}><span>{index + 1}</span><strong>{stage.label}</strong></button>)}</div><CoursePreview stage={journeyStage} /></section>
 
     <section className="section assessment-section" id="assessments"><div className="assessment-heading"><SectionIntro eyebrow="Beyond multiple choice" title="Assess the work your discipline actually requires." copy="Switch between question formats to see how numerical work, code, diagrams, proofs, and conceptual reasoning can live in one assessment system." /></div><AssessmentShowcase /></section>
 
-    <section className="research-section" id="research"><div className="research-quote"><span className="eyebrow">Research & academic practice</span><blockquote>“Built in university classrooms. Studied in university classrooms.”</blockquote></div><div className="research-copy"><p>PrairieLearn grew from university teaching and continues to sit inside a broader community of educational research and case studies.</p><p>Its public research collection spans question randomization, instant feedback, retrieval practice, computer-based testing, open-ended autograding, collaborative learning, and applications across STEM courses.</p><a href="https://www.prairielearn.com/research">Browse the research collection <ArrowRight /></a></div><div className="research-index" aria-label="Research topics"><span>Question randomization</span><span>Retrieval practice</span><span>Computer-based testing</span><span>Open-ended autograding</span><span>Collaborative learning</span></div></section>
+    <section className="research-section" id="research"><aside className="research-margin research-margin-left" aria-hidden="true"><span>FIG. 01</span><i /><small>QUESTION<br />RANDOMIZATION</small></aside><aside className="research-margin research-margin-right" aria-hidden="true"><span>FIELD NOTES</span><i /><small>FEEDBACK<br />RETRIEVAL<br />MASTERY</small></aside><div className="research-quote"><span className="eyebrow">Research & academic practice</span><blockquote>“Built in university classrooms. Studied in university classrooms.”</blockquote></div><div className="research-copy"><p>PrairieLearn grew from university teaching and continues to sit inside a broader community of educational research and case studies.</p><p>Its public research collection spans question randomization, instant feedback, retrieval practice, computer-based testing, open-ended autograding, collaborative learning, and applications across STEM courses.</p><a href="https://www.prairielearn.com/research">Browse the research collection <ArrowRight /></a></div><div className="research-index" aria-label="Research topics"><span>Question randomization</span><span>Retrieval practice</span><span>Computer-based testing</span><span>Open-ended autograding</span><span>Collaborative learning</span></div></section>
 
     <section className="section institutional-section" id="resources"><SectionIntro eyebrow="Open by design" title="Built for academic work. Supported for institutional use." /><div className="institutional-grid"><a href="https://github.com/PrairieLearn/PrairieLearn"><GitBranch /><span><strong>Open source</strong><small>See the code, run it yourself, and contribute.</small></span><ArrowRight /></a><a href="https://www.prairielearn.com/accessibility"><GraduationCap /><span><strong>Accessibility</strong><small>Read PrairieLearn’s accessibility statement and approach.</small></span><ArrowRight /></a><a href="https://www.prairielearn.com/security"><ShieldCheck /><span><strong>Security</strong><small>Review published security practices and audit information.</small></span><ArrowRight /></a><a href="https://docs.prairielearn.com/"><Code2 /><span><strong>Hosted support</strong><small>Use managed hosting or follow the documentation to self-host.</small></span><ArrowRight /></a></div></section>
 
