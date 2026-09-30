@@ -21,7 +21,16 @@ const journeyStages = [
   { key: "exam", label: "Exams", kicker: "Assess from the same question bank", body: "Reuse familiar question structures in proctored facilities or bring-your-own-device testing." },
 ];
 const assessmentTypes = [{ value: "numerical", label: "Numerical" }, { value: "code", label: "Code" }, { value: "graphical", label: "Graphical" }, { value: "ordered", label: "Ordered blocks" }, { value: "multiple", label: "Multiple select" }];
-const institutionNames = ["University of Illinois", "University of British Columbia", "Rice University", "New York University", "UC Davis", "Arizona State University", "University of York", "Grand Valley State University"];
+const institutions = [
+  { name: "University of Illinois", logo: "/institutions/illinois.png" },
+  { name: "University of British Columbia", logo: "/institutions/ubc.png" },
+  { name: "Rice University", logo: "/institutions/rice.svg" },
+  { name: "New York University", logo: "/institutions/nyu.png" },
+  { name: "UC Davis", logo: "/institutions/ucdavis.png" },
+  { name: "Arizona State University", logo: "/institutions/asu.png" },
+  { name: "University of York", logo: "/institutions/york.png" },
+  { name: "Grand Valley State University", logo: "/institutions/gvsu.png" },
+];
 
 function BrandMark() {
   return <span className="brand-mark" aria-hidden="true"><span>P</span><span>L</span></span>;
@@ -68,10 +77,11 @@ function WorkflowDiagram() {
   return <div className="workflow-layout">
     <div className="workflow-nav" role="tablist" aria-label="Question workflow">{workflowSteps.map((item, index) => <button key={item.number} type="button" className={active === index ? "active" : ""} onClick={() => setActive(index)} role="tab" aria-selected={active === index}><span>{item.number}</span>{item.label}</button>)}</div>
     <div className="workflow-stage">
-      <div className="workflow-canvas" aria-hidden="true">
+      <div className={`workflow-canvas step-${active}`} aria-hidden="true">
         <div className="author-file"><span>question.py</span><code>height = random(20, 80)</code><code>answer = √(2h / 9.8)</code></div>
         <div className="connector trunk" /><div className="variant-fan">{[20, 45, 80].map((height, index) => <div className={`mini-variant v${index + 1}`} key={height}><span>h = {height} m</span><strong>t = ?</strong></div>)}</div>
-        <div className="connector rail" /><div className="reuse-row"><span>Practice</span><span>Homework</span><span>Exam</span></div><div className="moving-pulse" style={{ left: `${12 + active * 25}%` }} />
+        <div className="connector rail short" /><div className="feedback-node"><Check /><strong>Grade automatically</strong><span>Return targeted feedback</span></div>
+        <div className="connector rail short" /><div className="reuse-row"><span>Practice</span><span>Homework</span><span>Exam</span></div>
       </div>
       <div className="workflow-caption" key={step.number}><span>{step.number} / 04</span><h3>{step.title}</h3><p>{step.body}</p></div>
     </div>
@@ -132,7 +142,17 @@ export default function Home() {
 
     <section className="hero" id="top"><div className="hero-grid" /><div className="hero-copy"><p className="hero-kicker"><span /> Open-source online assessment</p><h1>Assessment that helps students <em>learn by doing.</em></h1><p className="hero-lede">Write questions once, generate randomized variants, grade them automatically, and give students feedback while they are still thinking.</p><div className="hero-actions"><Button asChild className="yellow-button hero-primary"><a href="https://www.prairielearn.com/pricing">Start free</a></Button><Button asChild variant="outline" className="hero-secondary"><a href="https://us.prairielearn.com/pl/login">Explore the demo <ArrowRight /></a></Button></div><div className="hero-notes"><span><Check /> Free for instructors</span><span><Check /> Open source</span></div></div><div className="hero-product"><AssessmentDemo /><p className="interaction-note"><span>Try it:</span> answer, get feedback, then generate a new variant.</p></div></section>
 
-    <section className="trust-strip" aria-label="PrairieLearn adoption"><div className="metrics"><div><strong>50+</strong><span>Institutions</span></div><div><strong>1,000+</strong><span>Courses</span></div><div><strong>185K+</strong><span>Students</span></div><div><strong>165M+</strong><span>Questions graded</span></div></div><div className="institutions"><span className="institution-label">Used by instructors at</span>{institutionNames.map((name) => <span key={name}>{name}</span>)}</div></section>
+    <section className="trust-strip" aria-label="PrairieLearn adoption">
+      <div className="metrics">
+        <div className="metric-primary"><span className="metric-kicker">Learning at scale</span><strong>165M+</strong><span>Questions graded</span><div className="metric-rings" aria-hidden="true"><i /><i /><i /></div></div>
+        <div className="metric-stack">
+          <div><span className="metric-index">01</span><strong>50+</strong><span>Institutions</span><i aria-hidden="true" /></div>
+          <div><span className="metric-index">02</span><strong>1,000+</strong><span>Courses</span><i aria-hidden="true" /></div>
+          <div><span className="metric-index">03</span><strong>185K+</strong><span>Students</span><i aria-hidden="true" /></div>
+        </div>
+      </div>
+      <div className="institution-marquee"><span className="institution-label">Used by instructors at</span><div className="institution-window"><div className="institution-track">{[false, true].map((duplicate) => <div className="institution-set" aria-hidden={duplicate} key={String(duplicate)}>{institutions.map((institution) => <img key={`${duplicate}-${institution.name}`} src={institution.logo} alt={duplicate ? "" : institution.name} />)}</div>)}</div></div></div>
+    </section>
 
     <section className="section workflow-section" id="product"><SectionIntro eyebrow="One question, endlessly useful" title="Author the idea once. Let the question keep teaching." copy="PrairieLearn questions are defined as code, so the same learning objective can produce fresh practice across the course." /><WorkflowDiagram /></section>
 
