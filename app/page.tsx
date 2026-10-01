@@ -1,7 +1,7 @@
 "use client";
 
 import { type CSSProperties, useMemo, useState } from "react";
-import { ArrowRight, Check, Code2, GitBranch, GraduationCap, GripVertical, Menu, RefreshCw, ShieldCheck } from "lucide-react";
+import { ArrowRight, Check, Code2, Copy, GitFork, GraduationCap, GripVertical, Menu, RefreshCw, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -130,6 +130,25 @@ function AssessmentShowcase() {
   return <Tabs value={type} onValueChange={setType} className="assessment-showcase"><TabsList variant="line" className="assessment-tabs" aria-label="Assessment types">{assessmentTypes.map((item) => <TabsTrigger key={item.value} value={item.value}>{item.label}</TabsTrigger>)}</TabsList><div className="showcase-frame"><div className="showcase-chrome"><span>Question preview</span><span>PrairieLearn</span></div><div className="showcase-content" key={type}>{preview}</div></div></Tabs>;
 }
 
+function OpenSourceSection() {
+  const [copied, setCopied] = useState(false);
+  const command = "gh repo clone PrairieLearn/PrairieLearn";
+  const copyCommand = async () => {
+    try {
+      await navigator.clipboard.writeText(command);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1800);
+    } catch {
+      setCopied(false);
+    }
+  };
+
+  return <section className="open-source-section" id="open-source">
+    <div className="open-source-copy"><span className="eyebrow">Built in the open</span><h2>Open-source.<br /><em>Forever.</em></h2><p>PrairieLearn began life as open-source software, and we&apos;re committed to making sure it stays that way. With an active developer community of professors, course staff, and students, PrairieLearn gets better all the time.</p><div className="open-source-actions"><a href="https://github.com/PrairieLearn/PrairieLearn"><GitFork /> Explore the repository</a><a href="https://docs.prairielearn.com/">Read the documentation</a></div></div>
+    <div className="github-panel"><div className="github-panel-head"><span><GitFork /> PrairieLearn / PrairieLearn</span><a href="https://github.com/PrairieLearn/PrairieLearn">View on GitHub</a></div><div className="github-terminal"><span className="terminal-label">Clone with GitHub CLI</span><div className="terminal-command"><code><b>$</b> {command}</code><button type="button" onClick={copyCommand} aria-label="Copy GitHub CLI command">{copied ? <Check /> : <Copy />}</button></div><span className="copy-status" aria-live="polite">{copied ? "Copied to clipboard" : "Ready to run locally"}</span></div><div className="repo-files" aria-label="PrairieLearn question file structure"><div><span>question.html</span><small>Question interface</small></div><div><span>server.py</span><small>Generation and grading</small></div><div><span>info.json</span><small>Question metadata</small></div></div></div>
+  </section>;
+}
+
 export default function Home() {
   const [journeyStage, setJourneyStage] = useState(0);
   return <main>
@@ -162,7 +181,9 @@ export default function Home() {
 
     <section className="research-section" id="research"><div className="research-quote"><span className="eyebrow">Research & academic practice</span><blockquote>“Built in university classrooms. Studied in university classrooms.”</blockquote></div><div className="research-copy"><p>PrairieLearn grew from university teaching and continues to sit inside a broader community of educational research and case studies.</p><p>Its public research collection spans question randomization, instant feedback, retrieval practice, computer-based testing, open-ended autograding, collaborative learning, and applications across STEM courses.</p><a href="https://www.prairielearn.com/research">Browse the research collection <ArrowRight /></a></div><div className="research-index" aria-label="Research topics"><span>Question randomization</span><span>Retrieval practice</span><span>Computer-based testing</span><span>Open-ended autograding</span><span>Collaborative learning</span></div></section>
 
-    <section className="section institutional-section" id="resources"><SectionIntro eyebrow="Open by design" title="Built for academic work. Supported for institutional use." /><div className="institutional-grid"><a href="https://github.com/PrairieLearn/PrairieLearn"><GitBranch /><span><strong>Open source</strong><small>See the code, run it yourself, and contribute.</small></span><ArrowRight /></a><a href="https://www.prairielearn.com/accessibility"><GraduationCap /><span><strong>Accessibility</strong><small>Read PrairieLearn’s accessibility statement and approach.</small></span><ArrowRight /></a><a href="https://www.prairielearn.com/security"><ShieldCheck /><span><strong>Security</strong><small>Review published security practices and audit information.</small></span><ArrowRight /></a><a href="https://docs.prairielearn.com/"><Code2 /><span><strong>Hosted support</strong><small>Use managed hosting or follow the documentation to self-host.</small></span><ArrowRight /></a></div></section>
+    <OpenSourceSection />
+
+    <section className="section institutional-section" id="resources"><SectionIntro eyebrow="Institutional trust" title="Built for academic work. Supported for institutional use." /><div className="institutional-grid"><a href="https://www.prairielearn.com/accessibility"><GraduationCap /><span><strong>Accessibility</strong><small>Read PrairieLearn’s accessibility statement and approach.</small></span><ArrowRight /></a><a href="https://www.prairielearn.com/security"><ShieldCheck /><span><strong>Security</strong><small>Review published security practices and audit information.</small></span><ArrowRight /></a><a href="https://docs.prairielearn.com/"><Code2 /><span><strong>Hosted support</strong><small>Use managed hosting or follow the documentation to self-host.</small></span><ArrowRight /></a></div></section>
 
     <section className="pathways-section"><div className="pathways-heading"><span className="eyebrow">Where to go next</span><h2>Choose the path that fits where you are.</h2></div><div className="pathways-list"><article><span>01</span><div><p>Explore PrairieLearn</p><h3>See the product from a student’s point of view.</h3></div><a href="https://us.prairielearn.com/pl/login" aria-label="Explore PrairieLearn"><ArrowRight /></a></article><article><span>02</span><div><p>Teach with PrairieLearn</p><h3>Build your first question and bring it into a course.</h3></div><a href="https://docs.prairielearn.com/" aria-label="Use PrairieLearn in a course"><ArrowRight /></a></article><article><span>03</span><div><p>Evaluate for an institution</p><h3>Review hosting, security, accessibility, and pricing.</h3></div><a href="https://www.prairielearn.com/pricing" aria-label="Evaluate PrairieLearn"><ArrowRight /></a></article></div></section>
 

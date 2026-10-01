@@ -273,9 +273,37 @@ main { overflow: hidden; }
 .research-index { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 0; margin-top: 30px; border-top: 1px solid rgba(255,255,255,.2); border-bottom: 1px solid rgba(255,255,255,.2); }
 .research-index span { flex: 1 1 190px; padding: 18px; border-right: 1px solid rgba(255,255,255,.2); color: #aebfd2; font-size: .78rem; text-align: center; }
 
+.open-source-section { display: grid; grid-template-columns: .9fr 1.1fr; align-items: center; gap: clamp(55px, 7vw, 100px); padding: 125px max(24px, calc((100vw - 1200px) / 2)); overflow: hidden; border-bottom: 1px solid var(--line); background: #eef4fb; }
+.open-source-copy h2 { margin: 0; color: var(--navy); font-family: Georgia, "Times New Roman", serif; font-size: clamp(3.4rem, 6vw, 6rem); font-weight: 400; line-height: .94; letter-spacing: -.055em; }
+.open-source-copy h2 em { color: var(--blue); font-weight: 400; }
+.open-source-copy > p { max-width: 620px; margin: 30px 0 0; color: #55677e; font-size: 1.02rem; line-height: 1.8; }
+.open-source-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 24px; margin-top: 34px; }
+.open-source-actions a { display: inline-flex; align-items: center; gap: 9px; color: var(--blue); font-size: .86rem; font-weight: 800; }
+.open-source-actions a:first-child { min-height: 44px; padding: 0 17px; background: var(--blue); color: white; }
+.open-source-actions svg { width: 18px; }
+.github-panel { border: 1px solid #2b4d72; background: #0a2039; color: #dbe7f5; box-shadow: 14px 14px 0 var(--yellow), 0 28px 70px rgba(12,35,64,.2); }
+.github-panel-head { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 17px 20px; border-bottom: 1px solid #2b4d72; background: #102b4b; font-size: .77rem; }
+.github-panel-head span { display: inline-flex; align-items: center; gap: 9px; font-weight: 800; }
+.github-panel-head svg { width: 18px; }
+.github-panel-head a { color: #91b9e8; font-size: .7rem; }
+.github-terminal { padding: 38px 35px 30px; }
+.terminal-label { color: #7fa5ce; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .67rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.terminal-command { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 18px; margin-top: 15px; padding: 17px 18px; border: 1px solid #36597e; background: #08182b; }
+.terminal-command code { min-width: 0; overflow-x: auto; color: #e5edf6; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: clamp(.75rem, 1.2vw, .92rem); white-space: nowrap; }
+.terminal-command code b { color: var(--yellow); }
+.terminal-command button { display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid #52759a; background: transparent; color: #a9c8e9; cursor: pointer; transition: border-color .2s ease, color .2s ease, background .2s ease; }
+.terminal-command button:hover, .terminal-command button:focus-visible { border-color: var(--yellow); background: rgba(245,197,24,.1); color: var(--yellow); }
+.terminal-command button svg { width: 16px; }
+.copy-status { display: block; min-height: 19px; margin-top: 9px; color: #7896b8; font-size: .72rem; }
+.repo-files { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid #2b4d72; }
+.repo-files div { display: grid; gap: 4px; padding: 20px; border-right: 1px solid #2b4d72; }
+.repo-files div:last-child { border-right: 0; }
+.repo-files span { color: #8bb9ec; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .74rem; }
+.repo-files small { color: #8299b3; font-size: .69rem; }
+
 .institutional-section { background: white; }
 .institutional-section .section-intro { max-width: 900px; }
-.institutional-grid { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 65px; border-top: 1px solid #afbdcc; border-bottom: 1px solid #afbdcc; }
+.institutional-grid { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 65px; border-top: 1px solid #afbdcc; border-bottom: 1px solid #afbdcc; }
 .institutional-grid > a { min-height: 205px; display: grid; grid-template-columns: 36px 1fr auto; align-items: start; gap: 15px; padding: 29px 23px; border-right: 1px solid #cbd5df; transition: background .22s ease; }
 .institutional-grid > a:last-child { border-right: 0; }
 .institutional-grid > a:hover { background: var(--wash); }
@@ -326,16 +354,13 @@ footer a:hover { color: white; }
 
 @media (min-width: 1600px) {
   .site-header, .hero, .trust-strip { padding-inline: max(32px, calc((100vw - 1440px) / 2)); }
-  .section, .research-section, .pathways-section, .final-cta, footer { padding-inline: max(32px, calc((100vw - 1320px) / 2)); }
+  .section, .research-section, .open-source-section, .pathways-section, .final-cta, footer { padding-inline: max(32px, calc((100vw - 1320px) / 2)); }
 }
 
 @media (max-width: 1100px) {
   .desktop-nav { gap: 16px; font-size: .78rem; }
   .hero { grid-template-columns: 1fr 1fr; gap: 40px; }
   .hero h1 { font-size: clamp(3.4rem, 6vw, 5.3rem); }
-  .institutional-grid { grid-template-columns: repeat(2, 1fr); }
-  .institutional-grid > a:nth-child(2) { border-right: 0; }
-  .institutional-grid > a:nth-child(-n+2) { border-bottom: 1px solid #cbd5df; }
 }
 
 @media (max-width: 860px) {
@@ -350,13 +375,14 @@ footer a:hover { color: white; }
   .metric-primary { min-height: 210px; }
   .institution-marquee { grid-template-columns: 1fr; gap: 22px; }
   .institution-set { grid-template-columns: repeat(4, minmax(80px, 1fr)); }
-  .workflow-layout, .research-section, .pathways-section { grid-template-columns: 1fr; }
+  .workflow-layout, .research-section, .open-source-section, .pathways-section { grid-template-columns: 1fr; }
   .workflow-nav { grid-template-columns: repeat(4, 1fr); }
   .workflow-nav button { grid-template-columns: 1fr; gap: 6px; padding: 13px 8px; border-left: 0!important; border-right: 1px solid #ccd6e2; font-size: .74rem; text-align: center; }
   .workflow-nav button.active { padding-left: 8px; border-top: 3px solid var(--blue); }
   .preview-content { grid-template-columns: 1fr; }
   .stage-figure { border-left: 0; border-top: 1px solid rgba(255,255,255,.12); }
   .research-index { margin-top: 0; }
+  .github-panel { max-width: 720px; }
   .assessment-tabs { grid-template-columns: repeat(3, 1fr); }
   .pathways-heading { position: static; }
   .final-cta { grid-template-columns: 1fr; align-items: start; }
@@ -389,7 +415,7 @@ footer a:hover { color: white; }
   .metric-stack > div > span:last-of-type { font-size: .64rem; }
   .institution-set { grid-template-columns: repeat(2, minmax(100px, 1fr)); gap: 28px; }
   .institution-set img { max-width: 125px; max-height: 31px; }
-  .section, .research-section, .pathways-section, .final-cta { padding: 88px 18px; }
+  .section, .research-section, .open-source-section, .pathways-section, .final-cta { padding: 88px 18px; }
   .section-intro h2, .pathways-heading h2, .final-cta h2 { font-size: clamp(2.5rem, 12vw, 3.8rem); }
   .workflow-layout { gap: 24px; margin-top: 42px; }
   .workflow-nav { overflow-x: auto; grid-template-columns: repeat(4, minmax(115px, 1fr)); }
@@ -414,6 +440,12 @@ footer a:hover { color: white; }
   .research-section { gap: 45px; }
   .research-quote blockquote { font-size: clamp(2.65rem, 13vw, 4rem); }
   .research-index span { flex-basis: 100%; border-right: 0; border-bottom: 1px solid rgba(255,255,255,.15); text-align: left; }
+  .open-source-copy h2 { font-size: clamp(3.2rem, 15vw, 4.7rem); }
+  .github-terminal { padding: 28px 20px 22px; }
+  .github-panel-head { align-items: flex-start; flex-direction: column; }
+  .repo-files { grid-template-columns: 1fr; }
+  .repo-files div { border-right: 0; border-bottom: 1px solid #2b4d72; }
+  .repo-files div:last-child { border-bottom: 0; }
   .institutional-grid { grid-template-columns: 1fr; }
   .institutional-grid > a { min-height: 150px; border-right: 0!important; border-bottom: 1px solid #cbd5df; }
   .pathways-list article { grid-template-columns: 35px 1fr 38px; gap: 12px; padding-block: 27px; }
